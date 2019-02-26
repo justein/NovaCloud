@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="netty-springboot-client" />
+        <module name="netty-springboot-monitor" />
         <module name="netty-springboot-server" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
   </component>
 </project>

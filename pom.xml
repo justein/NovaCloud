@@ -34,6 +34,7 @@
     <modules>
         <module>netty-springboot-client</module>
         <module>netty-springboot-server</module>
+        <module>netty-springboot-monitor</module>
     </modules>
     <!--项目依赖管理-->
         <dependencies>
