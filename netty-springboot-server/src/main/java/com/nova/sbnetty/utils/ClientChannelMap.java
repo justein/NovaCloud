@@ -16,13 +16,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientChannelMap {
 
-    private static final Map<Long, SocketChannel> clientChannelMap = new ConcurrentHashMap<>();
+    private static final Map<Long, NioSocketChannel> clientChannelMap = new ConcurrentHashMap<>();
 
     public static void put(Long id, NioSocketChannel channel) {
         clientChannelMap.put(id, channel);
     }
-
-    public static SocketChannel get(Long id) {
+    /**将SocketChannel改为NioSocketChannel*/
+    public static NioSocketChannel get(Long id) {
         return clientChannelMap.get(id);
     }
 

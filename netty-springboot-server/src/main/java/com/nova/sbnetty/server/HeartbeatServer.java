@@ -1,12 +1,18 @@
 package com.nova.sbnetty.server;
 
+import com.alibaba.fastjson.JSON;
 import com.nova.sbnetty.handler.HeartbeatDecoder;
 import com.nova.sbnetty.handler.HeartbeatServerHandler;
+import com.nova.sbnetty.protocol.CustomProtocol;
+import com.nova.sbnetty.utils.ClientChannelMap;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -68,6 +74,18 @@ public class HeartbeatServer {
                     .addLast(new HeartbeatServerHandler());
 
         }
+    }
+
+    public void sendMsg(CustomProtocol customProtocol) {
+
+        NioSocketChannel nioSocketChannel = ClientChannelMap.get(customProtocol.getId());
+        if ( nioSocketChannel == null ){
+            throw new NullPointerException("没有["+customProtocol.getId()+"]的socketChannel");
+        }
+
+        ChannelFuture channelFuture = nioSocketChannel.writeAndFlush(Unpooled.copiedBuffer(customProtocol.toString(), CharsetUtil.UTF_8));
+        channelFuture.addListener(future -> logger.info("服务端手动发送消息成功={}", JSON.toJSON(customProtocol)));
+
     }
 
 }
